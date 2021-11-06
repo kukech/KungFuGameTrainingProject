@@ -6,7 +6,7 @@ public class PlayerMain : MonoBehaviour
 {
     private Rigidbody2D _body;
     private Animator _anim;
-    public float impulsePower;
+    [SerializeField] private float impulsePower;
     private float deltaX;
     void Start()
     {
@@ -26,6 +26,13 @@ public class PlayerMain : MonoBehaviour
             _anim.SetBool("IsAttack", true);
             StartCoroutine(Force());
         }
+    }
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (_body.velocity.x != 0)
+            collider.SendMessage("ReactToHit");
+        else Debug.Log("You Died");
+        _body.velocity = Vector3.zero;
     }
     public IEnumerator Force()
     {
